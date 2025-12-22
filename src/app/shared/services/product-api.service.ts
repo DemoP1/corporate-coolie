@@ -1,8 +1,11 @@
 import { HttpClient } from "@angular/common/http";
-import { inject } from "@angular/core";
+import { inject, Injectable, isStandalone } from "@angular/core";
 import { IProduct } from "../models/products.interface";
 import { map } from "rxjs";
 
+@Injectable({
+  providedIn: 'root',
+})
 export class ProductApiService {
     http = inject(HttpClient)
 

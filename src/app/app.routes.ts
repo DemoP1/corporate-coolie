@@ -10,5 +10,9 @@ export const routes: Routes = [
     {
         path:"products",
         loadComponent:()=> import('./shared/components/products/products').then((a) => a.Products)
+    },
+    {
+        path:"cart",
+        loadComponent:()=> import('./shared/components/cart/cart').then((a) => a.Cart)
     }
 ];
