@@ -8,7 +8,7 @@
         <strong>{{product.price | currency:'INR'}}</strong>
     </div>
     <div class="card-tags">
-        <button class="btn add-to-cart">Add To Cart</button>
+        <button (click)="addToCart()" class="btn add-to-cart">Add To Cart</button>
         <button class="btn buy-now">View Product</button>
     </div>
 </div>
