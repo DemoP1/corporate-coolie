@@ -1,0 +1,245 @@
+
+/* Container and Header */
+.cart-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.cart-header h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #f4f4f4;
+  padding-bottom: 0.5rem;
+}
+
+/* Empty State */
+.empty-cart {
+  text-align: center;
+  padding: 3rem;
+  color: #888;
+}
+
+/* Individual Cart Item */
+.cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+  border-bottom: 1px solid #eee;
+  gap: 1.5rem;
+}
+
+/* Remove Button */
+.remove-btn {
+  background: transparent;
+  border: none;
+  color: #ff4d4f;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: color 0.2s;
+}
+
+.remove-btn:hover {
+  color: #cf1322;
+}
+
+/* Image Wrapper */
+.item-image img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+/* Product Details */
+.item-details {
+  flex: 2;
+}
+
+.item-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0 0 0.25rem 0;
+  color: #222;
+}
+
+.item-price {
+  color: #666;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Quantity Controls */
+.item-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: #f9f9f9;
+  padding: 0.5rem;
+  border-radius: 6px;
+}
+
+.item-controls button {
+  background: #fff;
+  border: 1px solid #ddd;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+}
+
+.item-controls button:hover {
+  background: #eee;
+}
+
+.quantity {
+  font-weight: 600;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* Subtotal */
+.item-subtotal p {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #333;
+  margin: 0;
+  min-width: 80px;
+  text-align: right;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+  .cart-item {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .item-image {
+    order: 1;
+  }
+  
+  .item-details {
+    order: 2;
+    flex-basis: 60%;
+  }
+  
+  .remove-btn {
+    order: 3;
+  }
+  
+  .item-controls {
+    order: 4;
+  }
+  
+  .item-subtotal {
+    order: 5;
+    flex-grow: 1;
+    text-align: right;
+  }
+}
+.main-layout {
+  display: flex;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  align-items: flex-start; /* Keeps summary from stretching */
+}
+
+/* Global Styles for both containers */
+.cart-container, .cart-summary {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* Matching Shadow */
+  padding: 1.5rem;
+  border: 1px solid #f0f0f0;
+}
+
+/* Shared Header Style */
+.cart-header h2, .cart-summary h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #f4f4f4;
+  padding-bottom: 0.5rem;
+}
+
+/* Left Side Width */
+.cart-container {
+  flex: 2; /* Takes up 2/3 of space */
+  margin: 0; 
+}
+
+/* Right Side Width (Summary) */
+.cart-summary {
+  flex: 1; /* Takes up 1/3 of space */
+  position: sticky;
+  top: 2rem; /* Sticks when scrolling through long lists */
+}
+
+/* Summary Rows to match the spacing of items */
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  color: #666;
+  font-size: 1rem;
+}
+
+.summary-row.total {
+  border-top: 1px solid #eee;
+  padding-top: 1rem;
+  margin-top: 1rem;
+  font-weight: 700;
+  color: #222;
+  font-size: 1.2rem;
+}
+
+/* Matching Checkout Button */
+.checkout-btn {
+  width: 100%;
+  background-color: #222; /* Sleek black to match trash icon/text */
+  color: white;
+  border: none;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 1rem;
+}
+
+.checkout-btn:hover {
+  background-color: #444;
+}
+
+/* Responsive: Stack them on mobile */
+@media (max-width: 900px) {
+  .main-layout {
+    flex-direction: column;
+  }
+  
+  .cart-container, .cart-summary {
+    width: 100%;
+    flex: none;
+  }
+
+  .cart-summary {
+    position: static; /* Remove sticky on mobile */
+  }
+}

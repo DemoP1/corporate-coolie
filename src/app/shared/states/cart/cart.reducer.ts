@@ -4,11 +4,16 @@ import * as cartActions from "./cart.action";
 
 export interface CartState {
     products: IProduct[];
-    totalPrice?: number;
+    totalPrice: number;
 }
 
 export const initialCartState: CartState = {
     products: [],
+    totalPrice: 0,
+};
+
+export function calculateTotalPrice (products: IProduct[]): number {
+    return products.reduce((total, product) => total + (product.price * product.quantity), 0);
 };
 
 export const cartReducer = createReducer(
@@ -23,16 +28,19 @@ export const cartReducer = createReducer(
         ...state,
         products: state.products.map(product => product.id === productId
             ? { ...product, quantity: product.quantity + 1 } : product),
+            totalPrice: calculateTotalPrice(state.products)
     })),
     // Decrementing product quantity
     on(cartActions.decrementProduct, (state, { productId }) => ({
         ...state,
         products: state.products.map(product => product.id === productId
             ? { ...product, quantity: product.quantity - 1 } : product),
+            totalPrice: calculateTotalPrice(state.products)
     })),
     on(cartActions.removeProduct, (state, { productId }) => ({
         ...state,
         products: state.products.filter(product => product.id !== productId),
+        totalPrice: calculateTotalPrice(state.products)
     }))
 
 );
