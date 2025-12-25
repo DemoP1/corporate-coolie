@@ -2,7 +2,7 @@
     <div class="cart-header">
         <h2>Shopping Cart</h2>
     </div>
-    @if(!(cartItems$ |async)){
+    @if((cartItems$ |async)?.length === 0 ){
     <div class="empty-cart">
         <p>Your cart is empty</p>
     </div>
@@ -46,15 +46,13 @@
         </div>
         }
     </div>
+    @if (totalPrice$ | async) {
     <div class="cart-summary">
         <h3>Cart Summary</h3>
-        <p>Total Items: 1000</p>
-        <p>Total Price: {{ totalPrice$ | async |currency}}</p>
+        <p style="text-align: end;"> Total Items: {{ cartItemsCount$ | async }}</p>
+        <p style="text-align: end;">Total Price: {{ totalPrice$ | async |currency}}</p>
         <button class="checkout-btn">Proceed to Checkout</button>
     </div>
-
     }
-
-
-
+    }
 </div>
