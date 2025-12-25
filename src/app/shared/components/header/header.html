@@ -22,5 +22,8 @@
                 </ul>
             </div> -->
         </div>
+        <div class="cart">
+            <button class="cart-button" routerLink="/cart">Cart <span>{{(products$ | async)?.length || 0}}</span></button>
+        </div>
     </nav>
 </header>

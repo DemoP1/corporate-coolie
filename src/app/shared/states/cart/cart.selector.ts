@@ -6,9 +6,13 @@ import { CartState } from "./cart.reducer";
 export const selectCartState = (state: AppState) => state.cart;
 export const selectCartProducts = createSelector(
     selectCartState,
-    (state:CartState) => state.products
+    (state: CartState) => state.products
 );
 export const selectTotal = createSelector(
     selectCartState,
-    (state:CartState) =>state.totalPrice
+    (state: CartState) => state.totalPrice
+)
+export const totalItems = createSelector(
+    selectCartState,
+    (state: CartState) => state.totalItems
 )
