@@ -7,6 +7,8 @@ import { ProductApiService } from '../../services/product-api.service';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { addToCart } from '../../states/cart/cart.action';
+import * as productActions from '../../states/product/product.action';
+import * as productSelectors from '../../states/product/product.selector';
 
 @Component({
   selector: 'app-products',
@@ -17,8 +19,13 @@ import { addToCart } from '../../states/cart/cart.action';
 export class Products {
   http = inject(HttpClient)
   productApi = inject(ProductApiService)
-  products$ = this.productApi.getProducts() as Observable<IProduct[]>;
-  constructor(private store:Store<{cart:{products:IProduct[]}}>){ }
+  products$!: Observable<IProduct[]>;
+  error!: Observable<string | null>;
+  constructor(private store:Store<{cart:{products:IProduct[]}}>){
+    this.store.dispatch(productActions.loadProduct());
+    this.products$ = this.store.select(productSelectors.selectAllProducts);
+    this.error = this.store.select(productSelectors.selectAllProductError);
+   }
 
   
   addItemToCart(product:IProduct){

@@ -1,6 +1,11 @@
 <div class="container">
-@for ( product of products$ | async; track $index) {
+    @if (error | async) {
+        <h3>Something went wrong while loading products.</h3>
+    }
+@else {
+    @for ( product of products$ | async; track $index) {
     <app-product-card [product]="product" (addToCartEvent)="addItemToCart($event)" />
+}
 }
 </div>
 
