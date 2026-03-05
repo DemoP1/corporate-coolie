@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { selectCartProducts, selectTotal, totalItems } from '../../states/cart/cart.selector';
 import { CommonModule } from '@angular/common';
-import { AppState } from '../../states/app.state';
 import { Observable } from 'rxjs';
-import { IProduct } from '../../models/products.interface';
-import { decrementProduct, incrementProduct, removeProduct } from '../../states/cart/cart.action';
+import { IProduct } from '../../shared/models/products.interface';
+import { AppState } from '../../shared/states/app.state';
+import { removeProduct, incrementProduct, decrementProduct } from '../../shared/states/cart/cart.action';
+import { selectCartProducts, selectTotal, totalItems } from '../../shared/states/cart/cart.selector';
 
 @Component({
   selector: 'app-cart',

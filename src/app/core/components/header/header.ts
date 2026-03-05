@@ -1,17 +1,16 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { selectCartProducts } from '../../states/cart/cart.selector';
 import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-header',
-  imports: [AsyncPipe, RouterLink],
-  templateUrl: './header.html',
-  styleUrl: './header.css',
+  template: `
+   <h2> this header </h2>
+   <h3>welcom</h3>
+  `,
 })
 export class Header {
   store=inject(Store)
-  products$ =this.store.select(selectCartProducts);
 
 }

@@ -15,9 +15,5 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes),
-    provideStore({ auth: cartReducer }),
-    provideState({name:'cart',reducer:cartReducer}),
-    provideState({name:'products',reducer:ProductReducer}),
-    provideEffects(ProductEffect),
 ]
 };

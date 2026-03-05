@@ -1,18 +1,29 @@
 import { Routes } from '@angular/router';
+import { LoginPage } from './pages/login/login';
+import { Cart } from './pages/cart/cart';
+import { Products } from './pages/products/products';
+import { Profile } from './pages/profile/profile';
+import { Register } from './pages/register/register';
 
 export const routes: Routes = [
     {
-        path:'',
-        redirectTo:'products',
-        pathMatch: 'full'
-        
+        path: 'login',
+        loadComponent: () => import('./pages/login/login').then(m => LoginPage)
     },
     {
-        path:"products",
-        loadComponent:()=> import('./shared/components/products/products').then((a) => a.Products)
+        path: 'register',
+        loadComponent: () => import('./pages/register/register').then(m => Register)
     },
     {
-        path:"cart",
-        loadComponent:()=> import('./shared/components/cart/cart').then((a) => a.Cart)
+        path: 'products',
+        loadComponent: () => import('./pages/products/products').then(m => Products)
+    },
+    {
+        path: "profile",
+        loadComponent: () => import('./pages/profile/profile').then(m => Profile)
+    },
+    {
+        path: "cart",
+        loadComponent: () => import('./pages/cart/cart').then(m => Cart)
     }
 ];
