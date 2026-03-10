@@ -1,10 +1,12 @@
 import { Button } from "../../shared/components/button";
 import { RouterLink } from "@angular/router";
 import {Component, inject, signal} from '@angular/core';
-import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-import { HttpClient } from "@angular/common/http";
+import { CommonModule, JsonPipe } from '@angular/common';
 import { ProductApiService } from "../../shared/services/product-api.service";
-
+import { form, FormField, minLength, required } from '@angular/forms/signals'
+import { FormsModule } from "@angular/forms";
+import { min, startWith } from "rxjs";
+import { CustomFormError } from "../../shared/components/custom-form-error";
 
 
 @Component({
@@ -23,14 +25,16 @@ import { ProductApiService } from "../../shared/services/product-api.service";
                     </button>
                 </div>
             }
-            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <form (ngSubmit)="onSubmit()">
                 <div class="mb-5">
                     <label for="username" class="block text-gray-700 font-semibold mb-2">Username</label>
-                    <input type="text" formControlName="username" id="username" placeholder="Enter username" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm" required>
+                    <input type="text" [formField]="loginform.username" id="username" placeholder="Enter username" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm" >
+                   <app-form-error [control]="loginform.username()"></app-form-error>
                 </div>
                 <div class="mb-5">
                     <label for="password" class="block text-gray-700 font-semibold mb-2">Password</label>
-                    <input type="password" formControlName="password" id="password" placeholder="Enter password" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm" required>
+                    <input type="password" [formField]="loginform.password" id="password" placeholder="Enter password" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm" >
+                   <app-form-error [control]="loginform.password()"></app-form-error>
                 </div>
                 <div class="text-right mb-5">
                     <a href="#" class="text-blue-600 text-sm hover:underline">Forgot Password?</a>
@@ -45,36 +49,35 @@ import { ProductApiService } from "../../shared/services/product-api.service";
     host: {
         class: 'min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-100 to-violet-100'
     },
-    imports: [Button, RouterLink,ReactiveFormsModule]
+    imports: [Button, RouterLink, FormField,FormsModule, CustomFormError]
 })
 export class LoginPage {
 http = inject(ProductApiService)
 apiError = signal<string | null>(null);
+loginModel = signal({
+    username: '',
+    password: ''
+});
+loginform=form(this.loginModel,(rootPath)=>{
+    required(rootPath.password,{'message':'Password is required'});
+    required(rootPath.username,{'message':'Username is required'});
+    minLength(rootPath.password,6,{'message':'Password must be at least 6 characters long'});
+    
+});
    
-    loginForm= new FormGroup({
-        username: new FormControl('', [Validators.required]),
-        password: new FormControl('', [Validators.required])
-    })
+ 
     onSubmit(){
-            console.log('Login data:', this.loginForm);
-
-        if(this.loginForm.valid){
-            const {username,password}= this.loginForm.value;
-            console.log('Login data:', {username,password});
-            this.http.login(username!, password!).subscribe({
-                next: (response) => {
-
-                    console.log('Login successful:', response); 
-                },
-                error: (error) => {
-                    console.error('Login failed:', error); 
-                    this.apiError.set(error.error || 'An error occurred during login. Please try again.');
-                }
-            });
-            // Here you can add your authentication logic, e.g., call an API to verify credentials
-        } else {
-            console.log('Form is invalid');
-        } 
+        const { username, password } = this.loginModel();
+        this.http.login(username, password).subscribe({
+            next: (response) => {
+                console.log('Login successful:', response);
+                // Handle successful login, e.g., navigate to dashboard
+            },
+            error: (error) => {
+                console.error('Login failed:', error);
+                this.apiError.set(error.error.message || 'An error occurred during login.');
+            }
+        });
 
     }
 

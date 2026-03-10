@@ -1,29 +1,37 @@
-import { Component } from "@angular/core";
+import { Component, signal } from "@angular/core";
+import { form, required, minLength, validate, FormField } from "@angular/forms/signals";
 import { RouterLink } from "@angular/router";
+import { CustomFormError } from "../../shared/components/custom-form-error";
+import { FormsModule } from "@angular/forms";
+import { registerSchema } from "./register.schema";
 
 @Component({
     selector: 'app-register',
     template: `
         <div class="w-full max-w-md">
             
-            <form class="bg-white p-8 rounded-lg shadow-md">
+            <form class="bg-white p-8 rounded-lg shadow-md" ngsubmit="onSubmit()">
                 <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Register</h1>
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2">Full Name</label>
-                    <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter full name">
+                    <input type="text" [formField]="registerForm.fullName" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter full name">
+                    <app-form-error [control]="registerForm.fullName()"></app-form-error>
                 </div>
               
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2">Username</label>
-                    <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter username">
+                    <input type="text" [formField]="registerForm.username" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter username">
+                    <app-form-error [control]="registerForm.username()"></app-form-error>
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
-                    <input type="password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter password">
+                    <input type="password" [formField]="registerForm.password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter password">
+                    <app-form-error [control]="registerForm.password()"></app-form-error>   
                 </div>
                 <div class="mb-6">
                     <label class="block text-gray-700 text-sm font-bold mb-2">Confirm Password</label>
-                    <input type="password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Confirm password">
+                    <input type="password" [formField]="registerForm.confirmPassword" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Confirm password">
+                    <app-form-error [control]="registerForm.confirmPassword()"></app-form-error>
                 </div>
                 <button type="submit"  class="w-full bg-green-500 text-white font-bold py-2 px-4 rounded-md hover:bg-green-600 transition">Sign In</button>
                  <div class="text-center mt-5 text-sm text-gray-600">
@@ -37,8 +45,23 @@ import { RouterLink } from "@angular/router";
     host: {
         class: 'min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-100 to-violet-100'
     },
-    imports: [RouterLink]
+    imports: [RouterLink, FormField, CustomFormError,FormsModule]
 })
 export class Register {
+    registerModel= signal({
+    fullName:'',
+    username:'',
+    password:'',
+    confirmPassword:''
+    })
+
+    registerForm = form(this.registerModel, registerSchema);
+    ngsubmit(){
+        if(this.registerForm().valid()){
+            console.log('Form Submitted', this.registerModel());
+        }else{
+            console.log('Form is invalid');
+        }
+    }
 
 }
