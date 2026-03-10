@@ -15,15 +15,23 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/register/register').then(m => Register)
     },
     {
-        path: 'products',
-        loadComponent: () => import('./pages/products/products').then(m => Products)
+        path: '',
+        canActivate:[],
+        loadComponent: () => import('./pages/main-layout').then(m => m.MainLayout),
+        children: [
+            {
+                path: 'products',
+                loadComponent: () => import('./pages/products/products').then(m => Products)
+            },
+            {
+                path: "profile",
+                loadComponent: () => import('./pages/profile/profile').then(m => Profile)
+            },
+            {
+                path: "cart",
+                loadComponent: () => import('./pages/cart/cart').then(m => Cart)
+            }
+        ]
     },
-    {
-        path: "profile",
-        loadComponent: () => import('./pages/profile/profile').then(m => Profile)
-    },
-    {
-        path: "cart",
-        loadComponent: () => import('./pages/cart/cart').then(m => Cart)
-    }
+
 ];

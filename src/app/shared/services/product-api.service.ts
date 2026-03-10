@@ -18,4 +18,9 @@ export class ProductApiService {
             })
         }))
     }
+
+    login(username: string, password: string) {
+        // Simulate an API call for login
+        return this.http.post('https://fakestoreapi.com/auth/login', { username, password });
+    }
 }
