@@ -60,8 +60,8 @@ http = inject(AuthAPI)
 private readonly store$ = inject(Store);
 apiError = signal<string | null>(null);
 loginModel = signal({
-    username: 'johnd',
-    password: 'm38rmF$'
+    username: '',
+    password: ''
 });
 loginform=form(this.loginModel,(rootPath)=>{
     required(rootPath.password,{'message':'Password is required'});
