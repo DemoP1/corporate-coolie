@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { inject, Injectable, isStandalone } from "@angular/core";
 import { IProduct } from "../models/products.interface";
 import { map } from "rxjs";
+import { API_URL } from "../../app.config";
 
 @Injectable({
   providedIn: 'root',
@@ -19,8 +20,5 @@ export class ProductApiService {
         }))
     }
 
-    login(username: string, password: string) {
-        // Simulate an API call for login
-        return this.http.post('https://fakestoreapi.com/auth/login', { username, password });
-    }
+   
 }

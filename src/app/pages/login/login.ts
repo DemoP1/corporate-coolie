@@ -1,12 +1,14 @@
 import { Button } from "../../shared/components/button";
 import { RouterLink } from "@angular/router";
 import {Component, inject, signal} from '@angular/core';
-import { CommonModule, JsonPipe } from '@angular/common';
-import { ProductApiService } from "../../shared/services/product-api.service";
 import { form, FormField, minLength, required } from '@angular/forms/signals'
 import { FormsModule } from "@angular/forms";
-import { min, startWith } from "rxjs";
 import { CustomFormError } from "../../shared/components/custom-form-error";
+import { AuthAPI } from "../../shared/services/auth-api";
+import { Store } from "@ngrx/store";
+import { authActions } from "../../shared/store/auth.actions";
+import { AuthFeature } from "../../shared/store/auth.feature";
+import { toSignal } from "@angular/core/rxjs-interop";
 
 
 @Component({
@@ -25,7 +27,7 @@ import { CustomFormError } from "../../shared/components/custom-form-error";
                     </button>
                 </div>
             }
-            <form (ngSubmit)="onSubmit()">
+            <form (ngSubmit)="onSubmit($event)">
                 <div class="mb-5">
                     <label for="username" class="block text-gray-700 font-semibold mb-2">Username</label>
                     <input type="text" [formField]="loginform.username" id="username" placeholder="Enter username" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm" >
@@ -39,7 +41,9 @@ import { CustomFormError } from "../../shared/components/custom-form-error";
                 <div class="text-right mb-5">
                     <a href="#" class="text-blue-600 text-sm hover:underline">Forgot Password?</a>
                 </div>
-                <button appButton variant="secondary" size="md" type="submit" class="w-full  text-blue-600 font-semibold py-2 rounded-md transition">Sign In</button>
+                <button appButton variant="secondary" size="md" [disabled]="loginform().invalid() || isLoading()" type="submit" class="w-full  text-blue-600 font-semibold py-2 rounded-md transition">
+                   {{ isLoading() ? 'Logging in...' : 'Login' }}
+                </button>
                 <div class="text-center mt-5 text-sm text-gray-600">
                     Don't have an account? <a routerLink="/register" class="text-blue-600 hover:underline">Sign Up</a>
                 </div>
@@ -52,11 +56,12 @@ import { CustomFormError } from "../../shared/components/custom-form-error";
     imports: [Button, RouterLink, FormField,FormsModule, CustomFormError]
 })
 export class LoginPage {
-http = inject(ProductApiService)
+http = inject(AuthAPI)
+private readonly store$ = inject(Store);
 apiError = signal<string | null>(null);
 loginModel = signal({
-    username: '',
-    password: ''
+    username: 'johnd',
+    password: 'm38rmF$'
 });
 loginform=form(this.loginModel,(rootPath)=>{
     required(rootPath.password,{'message':'Password is required'});
@@ -65,19 +70,17 @@ loginform=form(this.loginModel,(rootPath)=>{
     
 });
    
+ readonly isLoading = toSignal(this.store$.select(AuthFeature.selectLoading));
  
-    onSubmit(){
+    onSubmit(event: Event) {
+        event.preventDefault();
         const { username, password } = this.loginModel();
-        this.http.login(username, password).subscribe({
-            next: (response) => {
-                console.log('Login successful:', response);
-                // Handle successful login, e.g., navigate to dashboard
-            },
-            error: (error) => {
-                console.error('Login failed:', error);
-                this.apiError.set(error.error.message || 'An error occurred during login.');
-            }
-        });
+        if(this.loginform().invalid()){
+            this.loginform().markAsTouched();
+            return;
+        }
+        this.store$.dispatch(authActions.login({ username, password }))
+       
 
     }
 
