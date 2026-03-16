@@ -8,9 +8,14 @@ import { Header } from "../core/components/header/header";
     imports: [RouterOutlet,Footer,Header],
     template:`
     <app-header />
-   <router-outlet />
+  <div class="flex-1 container mx-auto">
+     <router-outlet />
+  </div>
    <app-footer />
-    `
+    `,
+    host:{
+      class: 'min-h-screen flex flex-col' 
+    }
 })
 export class MainLayout{
 

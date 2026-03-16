@@ -1,4 +1,4 @@
-export interface IProduct {
+export type IProduct= {
   id: number
   title: string
   price: number
@@ -9,7 +9,7 @@ export interface IProduct {
   quantity: number
 }
 
-export interface Rating {
+export type Rating= {
   rate: number
   count: number
 }
