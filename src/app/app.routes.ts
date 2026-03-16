@@ -4,6 +4,10 @@ import { Cart } from './pages/cart/cart';
 import { Products } from './pages/products/products';
 import { Profile } from './pages/profile/profile';
 import { Register } from './pages/register/register';
+import { provideState } from '@ngrx/store';
+import { productFeature } from './pages/products/store/products.feature';
+import { provideEffects } from '@ngrx/effects';
+import * as ProductEffect  from './pages/products/store/products.effects';
 
 export const routes: Routes = [
     {
@@ -20,8 +24,14 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/main-layout').then(m => m.MainLayout),
         children: [
             {
+                path:'',
+                pathMatch:'full',
+                redirectTo:'products'
+            },
+            {
                 path: 'products',
-                loadComponent: () => import('./pages/products/products').then(m => Products)
+                loadComponent: () => import('./pages/products/products').then(m => Products),
+                providers:[provideState(productFeature),provideEffects(ProductEffect)]
             },
             {
                 path: "profile",
